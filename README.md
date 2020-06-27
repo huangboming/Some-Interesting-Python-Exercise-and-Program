@@ -1,2 +1,2 @@
-# Some-Interesting-Program
- 一些有趣的题目和练习
+## 一些好玩的问题和练习
+在学习Python过程中碰到的一些好玩的问题和练习，在github做个备份。
