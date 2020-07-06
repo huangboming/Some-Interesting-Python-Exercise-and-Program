@@ -31,15 +31,15 @@ def todays_month(start_year, total_days): #计算今天的月份和日期
     
     while days >= 0:  # 计算从1970年1月到今天的总月份
         if is_leap(start_year):
-            days_list = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+            days_list = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
         else:
-            days_list = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+            days_list = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
             
-        i = 0
-        while days >= 0 and 0 <= i < 12:
-            days -= days_list[i]
+        month = 1
+        while days >= 0 and 1 <= month <= 12:
+            days -= days_list[month]
             total_month += 1
-            i += 1
+            month += 1
         start_year += 1
         
     todays_month = int(total_month - (todays_year(start_year, total_days) - start_year) * 12) # 现在的月份 = 总月数 - 年数差 x 12
@@ -51,21 +51,20 @@ def todays_month(start_year, total_days): #计算今天的月份和日期
 
 
 def main():
-    total_seconds = time.time() ## time.time()返回从1970年1月到现在总共过了多少秒
-    total_minutes = time.time() // 60 ## 分 = 秒 / 60（向下取整，下同）
-    total_hours = total_minutes // 60 ## 小时 = 分 / 60
-    total_days = total_hours // 24 ##  天 = 小时 / 24
-    start_year = 1970 ## time.time()从1970年1月开始计算
+    total_seconds = time.time() 
+    total_minutes, nowsSecond = divmod(time.time(), 60)
+    total_hours, nowsMinute = divmod(total_minutes, 60) 
+    total_days, nowsHour = divmod(total_hours, 24)
+    start_year = 1970 
 
     todaysYear = todays_year(start_year, total_days) # 当前的年份
     todaysMonth, todaysDay = todays_month(start_year, total_days) # 当前的月份和日期
 
-    nowsHour = int(total_hours - total_days * 24) # 现在的小时数 = 总小时数 - 总天数 * 24
-    nowsMinute = int(total_minutes - total_hours * 60) # 现在的分钟数 = 总分钟数 - 总小时数 * 60
-    nowsSecond = int(total_seconds - total_minutes * 60) # 现在的秒数 = 总秒数 - 总分钟数 * 60
+    gmt_time_tuple = (todaysYear, todaysMonth, todaysDay, nowsHour, nowsMinute, nowsSecond)
+    utc_8_time_tuple = (todaysYear, todaysMonth, todaysDay, nowsHour+8, nowsMinute, nowsSecond)
     
-    print(f"Now is {todaysYear}-{todaysMonth}-{todaysDay}  {nowsHour}:{nowsMinute}:{nowsSecond} GMT")
-    print(f"Now is {todaysYear}-{todaysMonth}-{todaysDay}  {nowsHour + 8}:{nowsMinute}:{nowsSecond} UTC +8")
+    print("Now is %d-%.2d-%.2d  %.2d:%.2d:%.2d GMT" % gmt_time_tuple) 
+    print("Now is %d-%.2d-%.2d  %.2d:%.2d:%.2d UTC +8" % utc_8_time_tuple)
     
 if __name__ == "__main__":
     main()
