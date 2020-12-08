@@ -42,7 +42,7 @@ def todays_month(start_year, total_days): #计算今天的月份和日期
             month += 1
         start_year += 1
         
-    todays_month = total_month % 12 # 现在的月份 = 总月份除以12的余数
+    todays_month = total_month % 12 if total_month % 12 else 12 # 现在的月份 = 总月份除以12的余数
     todays_day = int(days + days_list[todays_month]) # 现在的日期 = 剩下几天到下一个月1号（负数） + 这个月的天数
     
     
